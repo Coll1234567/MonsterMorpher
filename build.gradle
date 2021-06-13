@@ -1,0 +1,54 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+	id 'java'
+	id "com.github.johnrengelman.shadow" version "7.0.0"
+}
+
+group 'me.jishuna.monstermorpher'
+version '1.0.0'
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_16
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	maven { url "https://repo.dmulloy2.net/nexus/repository/public/" }
+	maven { url "https://repo.md-5.net/content/groups/public/" }
+	maven { url "https://papermc.io/repo/repository/maven-public/" }
+}
+
+dependencies {
+    compileOnly group: 'org.spigotmc', name: 'spigot-api', version: '1.16.5-R0.1-SNAPSHOT'
+    compileOnly group: 'LibsDisguises', name: 'LibsDisguises', version: '10.0.25-SNAPSHOT'
+    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.6.0";
+    implementation group: 'me.jishuna.jishunacommonlib', name: 'JishunaCommonLib', version: '1.0.0'
+    implementation group: 'org.bstats', name: 'bstats-bukkit', version: '2.2.1'
+}
+
+shadowJar {
+  	dependsOn(jar)
+  	minimize()
+  	
+  	delete fileTree('./target/') {
+        exclude archiveName
+    }
+  
+    setArchiveName('MonsterMorpher-' + this.version + '.jar')                                              
+    relocate 'me.jishuna.commonlib', 'me.jishuna.challengeme.libs.jishunacommonlib' 
+    relocate 'org.bstats', 'me.jishuna.challengeme.libs.bstats'
+    destinationDirectory = file("./target/")                                   
+}
+
+build {
+    dependsOn shadowJar
+}
+
+processResources {
+	duplicatesStrategy = DuplicatesStrategy.WARN
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}
+
+shadowJar.shouldRunAfter build

@@ -1,0 +1,6 @@
+name: "Skeleton"
+description: "Weeee"
+duration: 200
+
+abilities:
+  arrow_barrage: 'SHIFT_RIGHT'

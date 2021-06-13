@@ -1,0 +1,10 @@
+name: MonsterMorpher
+version: @version@
+main: me.jishuna.monstermorpher.MonsterMorpher
+authors: [Jishuna]
+api-version: 1.16
+depend: [LibsDisguises]
+
+commands:
+  morph:
+    description: 'Test morph'
