@@ -3,9 +3,14 @@ package me.jishuna.monstermorpher.api.listener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityEvent;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import me.jishuna.commonlib.events.EventConsumer;
@@ -39,6 +44,29 @@ public class EventManager {
 		return this.listenerMap.containsKey(eventClass);
 	}
 
+	public <T extends PlayerEvent> void processPlayerEvent(T event, Class<T> eventClass) {
+		processEvent(event.getPlayer().getUniqueId(), event, eventClass);
+	}
+
+	public <T extends EntityEvent> void processEntityEvent(T event, Class<T> eventClass) {
+		if (event.getEntityType() == EntityType.PLAYER) {
+			processEvent(event.getEntity().getUniqueId(), event, eventClass);
+		}
+	}
+
+	public <T extends Event> void processEvent(UUID id, T event, Class<T> eventClass) {
+		Optional<MorphPlayer> playerOptional = this.plugin.getPlayerManager().getPlayer(id);
+
+		if (playerOptional.isPresent()) {
+			MorphPlayer morphPlayer = playerOptional.get();
+			morphPlayer.getMorph().ifPresent(morph -> {
+				for (Ability ability : morph.getAbilities(ActivationType.PASSIVE)) {
+					ability.getEventHandlers(eventClass).forEach(consumer -> consumer.consume(event, morphPlayer));
+				}
+			});
+		}
+	}
+
 	private void registerBaseEvents() {
 		// Blocks
 //		registerListener(BlockBreakEvent.class,
@@ -51,7 +79,7 @@ public class EventManager {
 //		registerListener(PlayerDeathEvent.class, event -> processEntityEvent(event, PlayerDeathEvent.class));
 //		registerListener(EntityToggleGlideEvent.class, event -> processEntityEvent(event, EntityToggleGlideEvent.class));
 //		registerListener(EntityAirChangeEvent.class, event -> processEntityEvent(event, EntityAirChangeEvent.class));
-//		registerListener(EntityPotionEffectEvent.class, event -> processEntityEvent(event, EntityPotionEffectEvent.class));
+		registerListener(EntityPotionEffectEvent.class, event -> processEntityEvent(event, EntityPotionEffectEvent.class));
 //		registerListener(EntityRegainHealthEvent.class, event -> processEntityEvent(event, EntityRegainHealthEvent.class));
 
 		registerListener(PlayerInteractEvent.class, this::handleInteract);

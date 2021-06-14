@@ -8,10 +8,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.EntityType;
 
 import me.jishuna.monstermorpher.MonsterMorpher;
 import me.jishuna.monstermorpher.api.event.MorphSetupEvent;
-import me.jishuna.monstermorpher.morphs.SkeletonMorph;
+import me.jishuna.monstermorpher.morphs.MobMorph;
 import me.jishuna.monstermorpher.morphs.TestMorph;
 
 public class MorphManager {
@@ -38,10 +39,13 @@ public class MorphManager {
 
 	private List<Morph> getDefaultMorphs() {
 		List<Morph> defaultMorphs = new ArrayList<>();
-		
+
 		defaultMorphs.add(new TestMorph(this.plugin, this.plugin.getAbilityManager()));
-		defaultMorphs.add(new SkeletonMorph(this.plugin, this.plugin.getAbilityManager()));
-		
+		defaultMorphs.add(new MobMorph(this.plugin, "zombie", EntityType.ZOMBIE, this.plugin.getAbilityManager()));
+		defaultMorphs.add(new MobMorph(this.plugin, "skeleton", EntityType.SKELETON, this.plugin.getAbilityManager()));
+		defaultMorphs.add(new MobMorph(this.plugin, "creeper", EntityType.CREEPER, this.plugin.getAbilityManager()));
+		defaultMorphs.add(new MobMorph(this.plugin, "bat", EntityType.BAT, this.plugin.getAbilityManager()));
+
 		return defaultMorphs;
 	}
 

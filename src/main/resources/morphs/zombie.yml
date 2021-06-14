@@ -1,0 +1,6 @@
+name: "Zombie"
+description: "Weeee"
+duration: 200
+
+abilities:
+  flesheater: 'PASSIVE'

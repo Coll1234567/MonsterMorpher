@@ -25,7 +25,6 @@ import me.jishuna.monstermorpher.MonsterMorpher;
 import me.jishuna.monstermorpher.api.abilities.Ability;
 import me.jishuna.monstermorpher.api.morph.Morph;
 import me.jishuna.monstermorpher.gson.PlayerDataSeralizer;
-import net.md_5.bungee.api.ChatColor;
 
 public class MorphPlayer {
 
@@ -130,8 +129,7 @@ public class MorphPlayer {
 			setMorph(null);
 		} else {
 			this.bossbar.setProgress(Math.min(timeLeft / (double) morph.getDuration(), 1));
-			// TODO translate
-			this.bossbar.setTitle(ChatColor.GREEN + "Morph Time: " + formatTime(timeLeft * 50));
+			this.bossbar.setTitle(morph.getName() + " " + formatTime(timeLeft * 50));
 		}
 	}
 

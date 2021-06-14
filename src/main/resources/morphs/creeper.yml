@@ -1,0 +1,6 @@
+name: "Creeper"
+description: "Weeee"
+duration: 200
+
+abilities:
+  blastoff: 'SHIFT_RIGHT'

@@ -11,7 +11,11 @@ import org.bukkit.Bukkit;
 
 import me.jishuna.monstermorpher.MonsterMorpher;
 import me.jishuna.monstermorpher.abilities.ArrowBarrageAbility;
+import me.jishuna.monstermorpher.abilities.BlastoffAbility;
+import me.jishuna.monstermorpher.abilities.FlesheaterAbility;
+import me.jishuna.monstermorpher.abilities.SonarAbility;
 import me.jishuna.monstermorpher.abilities.TestAbility;
+import me.jishuna.monstermorpher.abilities.WitherSkullAbility;
 import me.jishuna.monstermorpher.api.event.AbilitySetupEvent;
 
 public class AbilityManager {
@@ -40,6 +44,10 @@ public class AbilityManager {
 
 		defaultAbilities.add(new TestAbility(this.plugin));
 		defaultAbilities.add(new ArrowBarrageAbility(this.plugin));
+		defaultAbilities.add(new WitherSkullAbility(this.plugin));
+		defaultAbilities.add(new BlastoffAbility(this.plugin));
+		defaultAbilities.add(new SonarAbility(this.plugin));
+		defaultAbilities.add(new FlesheaterAbility(this.plugin));
 
 		return defaultAbilities;
 	}
